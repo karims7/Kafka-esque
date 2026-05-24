@@ -1,4 +1,4 @@
-package com.simplekafka.broker;
+package com.minikafka.broker;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
