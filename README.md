@@ -37,17 +37,19 @@ it stays there. This is by design — Kafka is an append-only log, like a diary.
 
 ## Project Structure
 
+```
 mini-kafka/
 ├── src/
-│ ├── main/
-│ │ └── java/
-│ │ └── com/
-│ │ └── minikafka/
-│ │ ├── broker/
-│ │ └── client/
-│ └── test/
-│ └── java/
+│   ├── main/
+│   │   └── java/
+│   │       └── com/
+│   │           └── minikafka/
+│   │               ├── broker/
+│   │               └── client/
+│   └── test/
+│       └── java/
 └── pom.xml
+```
 
 The `broker` package contains the server-side code — the post office itself.
 The `client` package contains the producer and consumer — the people using the post office.
