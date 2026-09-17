@@ -1,4 +1,4 @@
-# MiniKafka
+# mini-Kafka
 
 A simplified Kafka-like distributed messaging system built from scratch in Java.
 Built incrementally to understand how real Kafka works under the hood.
