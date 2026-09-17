@@ -19,8 +19,8 @@ import java.util.logging.Logger;
 /**
  * Client for interacting with Build Your Own Kafka brokers
  */
-public class SimpleKafkaClient {
-    private static final Logger LOGGER = Logger.getLogger(SimpleKafkaClient.class.getName());
+public class MiniKafkaClient {
+    private static final Logger LOGGER = Logger.getLogger(MiniKafkaClient.class.getName());
     private static final int DEFAULT_BUFFER_SIZE = 4096;
     
     private final String bootstrapBroker;
@@ -30,11 +30,11 @@ public class SimpleKafkaClient {
     private final AtomicInteger correlationId;
     
     /**
-     * Create a SimpleKafka client
+     * Create a MiniKafka client
      * @param bootstrapBroker Host of a broker to connect to
      * @param bootstrapPort Port of the broker to connect to
      */
-    public SimpleKafkaClient(String bootstrapBroker, int bootstrapPort) {
+    public MiniKafkaClient(String bootstrapBroker, int bootstrapPort) {
         this.bootstrapBroker = bootstrapBroker;
         this.bootstrapPort = bootstrapPort;
         this.topicMetadata = new ConcurrentHashMap<>();

@@ -9,28 +9,28 @@ import java.util.logging.Logger;
 /**
  * Example producer for Build Your Own Kafka
  */
-public class SimpleKafkaProducer {
-    private static final Logger LOGGER = Logger.getLogger(SimpleKafkaProducer.class.getName());
+public class MiniKafkaProducer {
+    private static final Logger LOGGER = Logger.getLogger(MiniKafkaProducer.class.getName());
     private static final int DEFAULT_PARTITIONS = 3;
     private static final short DEFAULT_REPLICATION = 2;
     
-    private final SimpleKafkaClient client;
+    private final MiniKafkaClient client;
     private final String topic;
     private final Random random;
     private final boolean createTopicIfNotExists;
     
     /**
-     * Create a SimpleKafka producer with default settings
+     * Create a MiniKafka producer with default settings
      */
-    public SimpleKafkaProducer(String bootstrapBroker, int bootstrapPort, String topic) {
+    public MiniKafkaProducer(String bootstrapBroker, int bootstrapPort, String topic) {
         this(bootstrapBroker, bootstrapPort, topic, true);
     }
     
     /**
-     * Create a SimpleKafka producer with custom settings
+     * Create a MiniKafka producer with custom settings
      */
-    public SimpleKafkaProducer(String bootstrapBroker, int bootstrapPort, String topic, boolean createTopicIfNotExists) {
-        this.client = new SimpleKafkaClient(bootstrapBroker, bootstrapPort);
+    public MiniKafkaProducer(String bootstrapBroker, int bootstrapPort, String topic, boolean createTopicIfNotExists) {
+        this.client = new MiniKafkaClient(bootstrapBroker, bootstrapPort);
         this.topic = topic;
         this.random = new Random();
         this.createTopicIfNotExists = createTopicIfNotExists;
@@ -56,7 +56,7 @@ public class SimpleKafkaProducer {
      * Send a message to a random partition
      */
     public long send(String message) throws IOException {
-        SimpleKafkaClient.TopicMetadata metadata = client.getTopicMetadata(topic);
+        MiniKafkaClient.TopicMetadata metadata = client.getTopicMetadata(topic);
         if (metadata == null) {
             throw new IOException("Topic does not exist: " + topic);
         }
@@ -87,7 +87,7 @@ public class SimpleKafkaProducer {
      */
     public static void main(String[] args) {
         if (args.length < 3) {
-            System.out.println("Usage: SimpleKafkaProducer <broker> <port> <topic>");
+            System.out.println("Usage: MiniKafkaProducer <broker> <port> <topic>");
             System.exit(1);
         }
         
@@ -96,7 +96,7 @@ public class SimpleKafkaProducer {
         String topic = args[2];
         
         try {
-            SimpleKafkaProducer producer = new SimpleKafkaProducer(broker, port, topic);
+            MiniKafkaProducer producer = new MiniKafkaProducer(broker, port, topic);
             producer.initialize();
             
             System.out.println("Producer initialized. Sending 10 messages...");

@@ -20,8 +20,8 @@ import java.util.logging.Logger;
 /**
  * A simplified implementation of a Kafka-like broker
  */
-public class SimpleKafkaBroker {
-    private static final Logger LOGGER = Logger.getLogger(SimpleKafkaBroker.class.getName());
+public class MiniKafkaBroker {
+    private static final Logger LOGGER = Logger.getLogger(MiniKafkaBroker.class.getName());
     private static final String DATA_DIR = "data";
 
     private final int brokerId;
@@ -35,7 +35,7 @@ public class SimpleKafkaBroker {
     private final Map<Integer, BrokerInfo> clusterMetadata;
     private final ZookeeperClient zkClient;
 
-    public SimpleKafkaBroker(int brokerId, String host, int port, int zkPort) throws IOException {
+    public MiniKafkaBroker(int brokerId, String host, int port, int zkPort) throws IOException {
         this.brokerId = brokerId;
         this.brokerHost = host;
         this.brokerPort = port;
@@ -196,7 +196,7 @@ public class SimpleKafkaBroker {
      */
     public static void main(String[] args) {
         if (args.length < 3) {
-            System.out.println("Usage: SimpleKafkaBroker <brokerId> <host> <port> [zkPort]");
+            System.out.println("Usage: MiniKafkaBroker <brokerId> <host> <port> [zkPort]");
             System.exit(1);
         }
 
@@ -206,13 +206,13 @@ public class SimpleKafkaBroker {
             int port = Integer.parseInt(args[2]);
             int zkPort = args.length > 3 ? Integer.parseInt(args[3]) : 2181;
 
-            SimpleKafkaBroker broker = new SimpleKafkaBroker(brokerId, host, port, zkPort);
+            MiniKafkaBroker broker = new MiniKafkaBroker(brokerId, host, port, zkPort);
             broker.start();
 
             // Add shutdown hook
             Runtime.getRuntime().addShutdownHook(new Thread(broker::stop));
 
-            System.out.println("SimpleKafka broker started. Press Ctrl+C to stop.");
+            System.out.println("MiniKafka broker started. Press Ctrl+C to stop.");
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Failed to start broker", e);
         }
@@ -227,7 +227,7 @@ public class SimpleKafkaBroker {
             serverChannel.socket().bind(new InetSocketAddress(brokerHost, brokerPort));
             serverChannel.configureBlocking(false);
 
-            LOGGER.info("SimpleKafka broker started on " + brokerHost + ":" + brokerPort);
+            LOGGER.info("MiniKafka broker started on " + brokerHost + ":" + brokerPort);
 
             // Register with ZooKeeper
             registerWithZookeeper();
@@ -249,7 +249,7 @@ public class SimpleKafkaBroker {
     public void stop() {
         if (isRunning.compareAndSet(true, false)) {
             try {
-                LOGGER.info("Stopping SimpleKafka broker...");
+                LOGGER.info("Stopping MiniKafka broker...");
 
                 // Close server socket
                 serverChannel.close();
@@ -268,7 +268,7 @@ public class SimpleKafkaBroker {
                 // Close ZooKeeper connection
                 zkClient.close();
 
-                LOGGER.info("SimpleKafka broker stopped");
+                LOGGER.info("MiniKafka broker stopped");
             } catch (Exception e) {
                 LOGGER.log(Level.SEVERE, "Error stopping broker", e);
             }
@@ -552,7 +552,7 @@ public class SimpleKafkaBroker {
     }
 
     /**
-     * Process client message based on SimpleKafka wire protocol
+     * Process client message based on MiniKafka wire protocol
      */
     private void processClientMessage(SocketChannel clientChannel, ByteBuffer buffer) throws IOException {
         byte messageType = buffer.get();

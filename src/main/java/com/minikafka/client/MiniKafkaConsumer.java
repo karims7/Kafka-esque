@@ -10,12 +10,12 @@ import java.util.logging.Logger;
 /**
  * Example consumer for Build Your Own Kafka
  */
-public class SimpleKafkaConsumer {
-    private static final Logger LOGGER = Logger.getLogger(SimpleKafkaConsumer.class.getName());
+public class MiniKafkaConsumer {
+    private static final Logger LOGGER = Logger.getLogger(MiniKafkaConsumer.class.getName());
     private static final int MAX_BYTES = 1024 * 1024; // 1MB max fetch size
     private static final int POLL_INTERVAL_MS = 100;
     
-    private final SimpleKafkaClient client;
+    private final MiniKafkaClient client;
     private final String topic;
     private final int partition;
     private long currentOffset;
@@ -23,26 +23,26 @@ public class SimpleKafkaConsumer {
     private Thread consumerThread;
     
     /**
-     * Create a SimpleKafka consumer
+     * Create a MiniKafka consumer
      * @param bootstrapBroker Hostname of a broker to connect to
      * @param bootstrapPort Port of the broker to connect to
      * @param topic Topic to consume from
      * @param partition Partition to consume from
      */
-    public SimpleKafkaConsumer(String bootstrapBroker, int bootstrapPort, String topic, int partition) {
+    public MiniKafkaConsumer(String bootstrapBroker, int bootstrapPort, String topic, int partition) {
         this(bootstrapBroker, bootstrapPort, topic, partition, 0);
     }
     
     /**
-     * Create a SimpleKafka consumer with a specific starting offset
+     * Create a MiniKafka consumer with a specific starting offset
      * @param bootstrapBroker Hostname of a broker to connect to
      * @param bootstrapPort Port of the broker to connect to
      * @param topic Topic to consume from
      * @param partition Partition to consume from
      * @param startOffset Offset to start consuming from
      */
-    public SimpleKafkaConsumer(String bootstrapBroker, int bootstrapPort, String topic, int partition, long startOffset) {
-        this.client = new SimpleKafkaClient(bootstrapBroker, bootstrapPort);
+    public MiniKafkaConsumer(String bootstrapBroker, int bootstrapPort, String topic, int partition, long startOffset) {
+        this.client = new MiniKafkaClient(bootstrapBroker, bootstrapPort);
         this.topic = topic;
         this.partition = partition;
         this.currentOffset = startOffset;
@@ -164,7 +164,7 @@ public class SimpleKafkaConsumer {
      */
     public static void main(String[] args) {
         if (args.length < 4) {
-            System.out.println("Usage: SimpleKafkaConsumer <broker> <port> <topic> <partition>");
+            System.out.println("Usage: MiniKafkaConsumer <broker> <port> <topic> <partition>");
             System.exit(1);
         }
         
@@ -174,7 +174,7 @@ public class SimpleKafkaConsumer {
         int partition = Integer.parseInt(args[3]);
         
         try {
-            SimpleKafkaConsumer consumer = new SimpleKafkaConsumer(broker, port, topic, partition);
+            MiniKafkaConsumer consumer = new MiniKafkaConsumer(broker, port, topic, partition);
             consumer.initialize();
             
             System.out.println("Consumer initialized. Starting consumption...");
